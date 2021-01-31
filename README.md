@@ -1,5 +1,5 @@
-Arpan's : 
-![alt text](Program_To_Rename_Mass_Number_Of _File/images/cybergreek.png "Logo Title Text 1")
+# Cybergreek021204's 
+#             Creation...
 
 
 # Python Program of --
