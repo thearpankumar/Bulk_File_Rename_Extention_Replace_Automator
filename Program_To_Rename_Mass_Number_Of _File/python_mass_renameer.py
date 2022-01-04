@@ -1,20 +1,19 @@
 # Created by cybergreek0212204
-
+ 
 # Program to rename bulk of your files at once 
 # WARNING ! Use this python script on your own risk. I am not responsible for any of your loss
 # Go through the code before you run the code to .... lower the chance of risk 
 # of any of the loss .... and all the renamed can be renamed manually or with this script later
-# IMPORTANT - All the files are not deleted they all are just permanently renamed of that time
+# IMPORTANT - All the files can be deleted if caused any problem eith the inputed argument,
 # 
-# This code is safe to run and doesn't cause any harm before any of your actions
+# This code is not safe to run and can cause any harm before any of your actions
 # Go to 'main' function to understand the functioning properly 
 
 # Completed
 # Importing OS library
 import os
-
-
-# Function to get the logo
+from colorama import Fore, Back, Style
+#TODO : make it a fully feached gnu utility which can take argument eith "--example"
 def logo():
     print('   CYBERGREEK PRESENTS -   Mass_file_rename_automator ')
     print('               Created by - Arpan kumar    ')
@@ -34,8 +33,9 @@ try:
         my_dest = my_source2 + re
         os.rename(my_source, my_dest)
         print('Replacement file : ', filename)
-except:
-    pass
+except Exception as Des:
+    print(Des)
+    exit
 
 # noinspection PyArgumentList
 try:
@@ -71,8 +71,9 @@ try:
             # If you enter any other number other than program wants 
             # Then you will get this line showed
             print('Enter the number correctly .......  To rename the files correctly ......')
-except:  # passing any other error occurred
-    pass
+except Exception as Fes:  # passing any other error occurred
+    print(Fes)
+    exit
 
 try:
     # This is the function to rename the files with random and length of your want 
@@ -116,6 +117,46 @@ try:
 except:
     pass
 
+# This function manages the work to .....
+# Rename all the files with custom name ..
+#  Or to Rename the specified number of files with custom name 
+def custom_rename_limit(path, extension):
+    print('Do you want to rename all (1 - yes , 2- no ) :  ')
+    a = int(input('Enter the number :  '))
+    # Enter the custom name for the file 
+    custom = str(input('Enter the custom name for the file you want to rename :'))
+    limit_check = len(custom)
+    execute = False
+    for filename in os.listdir(path):
+        filename = list(filename)
+        if list(custom) == filename[0: limit_check]:
+            execute = True 
+    if execute == True :
+        print(Fore.RED + Back.GREEN +'CAUTION !!! THE CUSTOM CHARACTER ALREADY EXIST CHANGE THE THE CHARACTER OR YOUR FILE CAN BE DELETED ')
+        print(Fore.RED + Back.GREEN + 'OR CHOOSE CUSTOM LIMIT' + Style.RESET_ALL)
+        custom_rename_limit(path, extension)
+
+    if a == 1:  # Renaming all the files with custom name
+        print('The output for your custom name will be [custom1],[custom2]...... ')
+
+        i = 0
+        for filename in os.listdir(path):  # Initializing rename function
+            i += 1
+            custom_rename(path, extension, filename=filename, i=i, custom=custom)
+
+    elif a == 2:  # renaming specifies number fo files with custom name
+        print('The output for your custom name will be [custom1],[custom2]...... ')
+
+        b = int(input('enter the number of files you want to rename :'))
+        i = 0
+        z = 0
+        for filename in os.listdir(path):  # Initializing rename function
+            i += 1
+            if i <= b:
+                z += 1
+                custom_rename(path, extension=extension, filename=filename, i=z, custom=custom)
+    else:
+        print('Enter the number correctly .......  To rename the files correctly ......')
 
 # This function manages the work to .....
 # Rename all the files with random name ..
@@ -136,37 +177,6 @@ def random_rename_limit(path, extension):
             i += 1
             if i <= b:
                 random_rename(path, extension, filename=filename, length=d)
-    else:
-        print('Enter the number correctly .......  To rename the files correctly ......')
-
-
-# This function manages the work to .....
-# Rename all the files with custom name ..
-#  Or to Rename the specified number of files with custom name 
-def custom_rename_limit(path, extension):
-    print('Do you want to rename all (1 - yes , 2- no ) :  ')
-    a = int(input('Enter the number :  '))
-    # Enter the custom name for the file 
-    custom = str(input('Enter the custom name for the file you want to rename :'))
-    if a == 1:  # Renaming all the files with custom name
-        print('The output for your custom name will be [custom1],[custom2]...... ')
-
-        i = 0
-        for filename in os.listdir(path):  # Initializing rename function
-            i += 1
-            custom_rename(path, extension, filename=filename, i=i, custom=custom)
-
-    elif a == 2:  # renaming specifies number fo files with custom name
-        print('The output for your custom name will be [custom1],[custom2]...... ')
-
-        b = int(input('enter the number of files you want to rename :'))
-        i = 0
-        z = 0
-        for filename in os.listdir(path):  # Initializing rename function
-            i += 1
-            if i <= b:
-                z += 1
-                custom_rename(path, extension=extension, filename=filename, i=z, custom=custom)
     else:
         print('Enter the number correctly .......  To rename the files correctly ......')
 
@@ -207,43 +217,46 @@ def total_rename(path, extension):
 # 1. Changing the extension
 # 2. Just renaming the file with the name of of convenience
 def main():
-    logo()
-    try:
-        ec = 'Do you want to just rename the Extension of the file or just want to just change all the names ..'
-        print(ec)
-        # Input the facility of the program you want to use
-        gh = int(input('Choose 1. Rename the extension 2. Change the name of the file : '))
-        # Enter the path of the file till the containing folder 
-        # Test path example
-        # path = 'G:\Website templates\my final website template\Students Notes _ Physics For Future_files'
-        way = str(input('Enter the destination of the files you want to rename : '))
-        if gh == 1:  # Calling the extension change facility
+    while True:
+            logo()
             try:
-                replacement = str(input('Enter the extension you want to replace : '))
-                extension2 = str(input('Enter the new extension you want to change with : '))
-                extension_remover(path=way, replacement=replacement, extension2=extension2)
-            except:
-                pass
-        elif gh == 2:  # Calling the rename facility
-            try:
-                # Here input the extension of the files you want to rename
-                extension = str(input('Enter the extension of the file you want to rename " . " : '))
-                total_rename(way, extension)
-            except:
-                pass
-    except BaseException as E:
-        ez = ' Choose the option correctly.... to rename the files correctly......'
-        print(f'\n \n Exception is : {E} \n', ez, '\n\n')
-
-
+                ec = 'Do you want to just rename the Extension of the file or just want to just change all the names ..'
+                print(ec)
+                # Input the facility of the program you want to use
+                gh = int(input('Choose 1. Rename the extension 2. Change the name of the file : 3. EXIT :- '))
+                # Enter the path of the file till the containing folder in way variable 
+                # Test path example
+                # path = 'G:\Website templates\my final website template\Students Notes _ Physics For Future_files'
+                if gh == 1:  # Calling the extension change facility
+                    try:
+                        way = str(input('Enter the destination of the files you want to rename : '))
+                        replacement = str(input('Enter the extension you want to replace : '))
+                        extension2 = str(input('Enter the new extension you want to change with : '))
+                        extension_remover(path=way, replacement=replacement, extension2=extension2)
+                    except:
+                        pass
+                elif gh == 2:  # Calling the rename facility
+                    try:
+                        way = str(input('Enter the destination of the files you want to rename : '))
+                        # Here input the extension of the files you want to rename
+                        extension = str(input('Enter the extension of the file you want to rename with the  " . " : '))
+                        total_rename(way, extension)
+                    except:
+                        pass
+                elif gh == 3:
+                    break
+            except BaseException as Eas:
+                ez = ' Choose the option correctly.... to rename the files correctly......'
+                print(f'\n \n Exception is :', Eas , '\n', '\n\n')
+                exit
 # Initialising the program
 if __name__ == '__main__':
-    while True:
-        try:
-            # Initialising the main function 
-            # to init() all the facilities of the code
-            main()
-        except Exception as r:
+    try:
+        
+        # Initialising the main function 
+        # to init() all the facilities of the code
+        main()
+    except Exception as r:
             print('Exception is : ' + str(r))
             print('\n Choose the options correctly .......')
-            pass
+            
